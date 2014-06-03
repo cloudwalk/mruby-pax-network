@@ -3,10 +3,6 @@ class Network
     attr_accessor :pass, :user, :apn
   end
 
-  def self.open(*args)
-    self.new(*args)
-  end
-
   def self.getaddress(host)
     TCPSocket.getaddress(host)
   end

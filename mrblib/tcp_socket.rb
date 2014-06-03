@@ -11,6 +11,10 @@ class TCPSocket
 
   attr_accessor :fd, :timeout
 
+  def self.open(*args)
+    self.new(*args)
+  end
+
   def timeout=(miliseconds = self.class.default_timeout)
     ioctl(CMD_TO_SET, miliseconds)
     @timeout = miliseconds
