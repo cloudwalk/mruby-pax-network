@@ -1,0 +1,18 @@
+#include "mruby.h"
+
+void mrb_init_network(mrb_state *mrb);
+void mrb_init_socket(mrb_state *mrb);
+
+#define DONE mrb_gc_arena_restore(mrb, 0)
+
+void
+mrb_mruby_pax_network_gem_init(mrb_state* mrb)
+{
+  mrb_init_network(mrb); DONE;
+  mrb_init_socket(mrb); DONE;
+}
+
+void
+mrb_mruby_pax_network_gem_final(mrb_state* mrb)
+{
+}
