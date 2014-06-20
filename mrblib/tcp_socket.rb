@@ -20,6 +20,10 @@ class TCPSocket
     @timeout = miliseconds
   end
 
+  def timeout
+    @timeout || self.class.default_timeout
+  end
+
   def write(mesg)
     send(mesg, 0)
   end
