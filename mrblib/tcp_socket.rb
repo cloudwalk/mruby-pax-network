@@ -34,10 +34,11 @@ class TCPSocket
   def read(length, outbuf=nil)
     time_start = Time.now
     buf = ""
-    while (buf.size > length)
+    while (buf.size < length)
       buf << recv(1)
-      return buf if (Time.now - time_start) > (self.timeout / 1000)
+      return buf if (Time.now.to_i - time_start.to_i) > (self.timeout / 1000)
     end
+    buf
   end
 
   def getaddress(host)
