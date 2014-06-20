@@ -37,6 +37,7 @@
 #include "mruby/hash.h"
 #include "mruby/string.h"
 #include "mruby/variable.h"
+#include "mruby/ext/io.h"
 
 #if MRUBY_RELEASE_NO < 10000
   #include "error.h"
@@ -152,7 +153,6 @@ mrb_socket_send(mrb_state *mrb, mrb_value klass)
   mrb_get_args(mrb, "Si|S", &mesg, &flags, &dest);
 
   fd = socket_fd(mrb, klass);
-
 #ifdef PAX
   if (mrb_string_p(mesg)) {
     bytes = NetSend(fd, RSTRING_PTR(mesg), RSTRING_LEN(mesg), flags);
@@ -175,11 +175,14 @@ mrb_socket_recv(mrb_state *mrb, mrb_value klass)
   fd = socket_fd(mrb, klass);
 
 #ifdef PAX
-  mesg  = mrb_str_buf_new(mrb, maxlen);
-  bytes = NetRecv(fd, RSTRING_PTR(mesg), maxlen, flags);
+  if (fd >= 0) {
+    mesg  = mrb_str_buf_new(mrb, maxlen);
+    bytes = NetRecv(fd, RSTRING_PTR(mesg), maxlen, flags);
 
-  if (bytes > 0)
-    mrb_str_resize(mrb, mesg, bytes);
+    if (bytes > 0)
+      mrb_str_resize(mrb, mesg, bytes);
+  } else
+    mrb_raise(mrb, E_IO_ERROR, "closed stream");
 #endif
 
   return mesg;
