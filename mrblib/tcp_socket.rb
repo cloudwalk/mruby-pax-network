@@ -7,7 +7,7 @@ class TCPSocket
     attr_accessor :default_timeout
   end
 
-  self.default_timeout = 55000
+  self.default_timeout = 120000
 
   attr_accessor :fd, :timeout
 
