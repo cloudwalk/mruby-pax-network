@@ -102,7 +102,7 @@ mrb_init_gprs(mrb_state* mrb)
 {
   struct RClass *network, *gprs;
 
-  network = mrb_define_class(mrb, "Network", mrb->object_class);
+  network = mrb_class_get(mrb, "Network");
   gprs    = mrb_define_class(mrb, "Gprs", network);
 
   mrb_define_class_method(mrb, gprs, "start", mrb_gprs_start, MRB_ARGS_NONE());
