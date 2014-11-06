@@ -40,5 +40,17 @@ class Network
       :wpa2_psk     => AUTH_WPA2_PSK,
       :wpa2_eap     => AUTH_WPA2_EAP
     }
+
+    def self.init(options = {})
+      @essid          = options[:essid].to_s
+      @bssid          = options[:bssid].to_s
+      @mode           = options[:mode].to_s
+      @authentication = options[:authentication].to_s
+      @cipher         = options[:cipher].to_s
+      @password       = options[:password].to_s
+      @channel        = options[:channel].to_s
+      self.start
+    end
+
   end
 end

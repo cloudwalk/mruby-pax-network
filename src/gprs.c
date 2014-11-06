@@ -39,41 +39,8 @@
 #include "osal.h"
 
 static mrb_value
-mrb_gprs_init(mrb_state *mrb, mrb_value klass)
+mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 {
-  //mrb_value media, apn, user, password, ary;
-  mrb_value media, options, value;
-  //const char *sAPN, *sUser, *sPwd;
-
-  mrb_get_args(mrb, "|o", &options);
-
-  mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@media"), media);
-
-  if (mrb_hash_p(options)) {
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "apn")));
-    //sAPN = mrb_str_to_cstr(mrb, value);
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@apn"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "user")));
-    //sUser = mrb_str_to_cstr(mrb, value);
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@user"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "password")));
-    //sPwd = mrb_str_to_cstr(mrb, value);
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@password"), value);
-
-    // TODO Scalone: Implement auth
-    //value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "apn")));
-    //sAPN = mrb_str_to_cstr(mrb, value);
-    //mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "apn"), value);
-
-    // TODO Scalone: Implement Keep Alive Time
-    //value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "apn")));
-    //sAPN = mrb_str_to_cstr(mrb, value);
-    //mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "apn"), value);
-  }
-
-  /*return mrb_fixnum_value(WlInit(NULL));*/
   return mrb_fixnum_value(OsWlInit(NULL));
 }
 
@@ -138,7 +105,7 @@ mrb_init_gprs(mrb_state* mrb)
   network = mrb_define_class(mrb, "Network", mrb->object_class);
   gprs    = mrb_define_class(mrb, "Gprs", network);
 
-  mrb_define_class_method(mrb, gprs, "init", mrb_gprs_init, MRB_ARGS_OPT(1));
+  mrb_define_class_method(mrb, gprs, "start", mrb_gprs_start, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "power", mrb_gprs_power, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, gprs, "connect", mrb_gprs_connect, MRB_ARGS_OPT(1));
   mrb_define_class_method(mrb, gprs, "connected?", mrb_gprs_connected_m, MRB_ARGS_NONE());

@@ -39,33 +39,8 @@
 #include "osal.h"
 
 static mrb_value
-mrb_wifi_init(mrb_state *mrb, mrb_value klass)
+mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
-  mrb_value options, value;
-
-  mrb_get_args(mrb, "|o", &options);
-
-  if (mrb_hash_p(options)) {
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "essid")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "bssid")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@bssid"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "mode")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@mode"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "authentication")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@authentication"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "cipher")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@cipher"), value);
-
-    value = mrb_hash_get(mrb, options, mrb_symbol_value(mrb_intern_cstr(mrb, "password")));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@password"), value);
-  }
-
-  /*return mrb_fixnum_value(OsWlInit(NULL));*/
   return mrb_fixnum_value(OsWifiOpen());
 }
 
@@ -167,7 +142,7 @@ mrb_init_wifi(mrb_state* mrb)
   network = mrb_define_class(mrb, "Network", mrb->object_class);
   wifi    = mrb_define_class(mrb, "Wifi", network);
 
-  mrb_define_class_method(mrb, wifi, "init", mrb_wifi_init, MRB_ARGS_REQ(1)|MRB_ARGS_OPT(1));
+  mrb_define_class_method(mrb, wifi, "start", mrb_wifi_start, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, wifi, "power", mrb_wifi_power, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, wifi, "connect", mrb_wifi_connect, MRB_ARGS_OPT(1));
   mrb_define_class_method(mrb, wifi, "connected?", mrb_wifi_connected_m, MRB_ARGS_NONE());
