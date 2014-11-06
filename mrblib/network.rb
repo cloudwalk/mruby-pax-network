@@ -1,3 +1,4 @@
+
 class Network
   class << self
     attr_accessor :interface
@@ -17,7 +18,7 @@ class Network
   end
 
   def self.method_missing(method, *args, &block)
-    if @interface.respond_to? :method
+    if @interface.respond_to? method
       @interface.send(method, *args, &block)
     else
       super
