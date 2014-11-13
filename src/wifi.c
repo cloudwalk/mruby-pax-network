@@ -54,6 +54,24 @@ mrb_wifi_power(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(OsWifiSwitchPower(state));
 }
 
+static int
+isWEP(int AuthMode)
+{
+  if (AuthMode == AUTH_NONE_WEP || AuthMode == AUTH_NONE_WEP_SHARED)
+    return 1;
+  else
+    return 0;
+}
+
+static int
+isPSK(int AuthMode)
+{
+  if (AuthMode == AUTH_WPA_PSK || AuthMode == AUTH_WPA_WPA2_PSK || AuthMode == AUTH_WPA2_PSK)
+    return 1;
+  else
+    return 0;
+}
+
 //TODO Scalone: Support blocking and non blocking connection with timeout modification
 //TODO Scalone: Check if parameters is string
 //TODO Scalone: Add more authentications mode
@@ -106,13 +124,19 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   /*DEBUG*/
   /*display("authmode %d", atoi(sAuthentication));*/
 
-  /*WPA_PSK_KEY PskKey; [> For wpa,wpa2-psk authentication <]*/
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
   sPassword = mrb_str_to_cstr(mrb, password);
 
-  strcpy((char *)&psk.Key, sPassword);
-  psk.KeyLen = strlen(sPassword);
-  wifiSet.KeyUnion.PskKey = psk;
+  if (isPSK(wifiSet.AuthMode)) {
+    /*WPA_PSK_KEY PskKey; [> For wpa,wpa2-psk authentication <]*/
+    strcpy((char *)&psk.Key, sPassword);
+    psk.KeyLen = strlen(sPassword);
+    wifiSet.KeyUnion.PskKey = psk;
+  } else if (isWEP(wifiSet.AuthMode)) {
+    strcpy((char *)&wep.Key, sPassword);
+    wep.KeyLen = strlen(sPassword);
+    wifiSet.KeyUnion.WepKey = wep;
+  }
   /*DEBUG*/
   /*display("len %d key %s", wifiSet.KeyUnion.PskKey.KeyLen, wifiSet.KeyUnion.PskKey.Key);*/
 
