@@ -75,8 +75,10 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 
   /*char Essid[33]; [> AP name, it can support 32 bytes at most, and ending with '\0' <]*/
   essid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@essid"));
-  sEssid  = mrb_str_to_cstr(mrb, essid);
+  sEssid = mrb_str_to_cstr(mrb, essid);
   strcpy((char *)&wifiSet.Essid, sEssid);
+  /*DEBUG*/
+  /*display("essid %s", wifiSet.Essid);*/
 
   /*char Bssid[20]; [> MAC address, if there is no any APs with the same ESSID, Bssid can be "\0"<]*/
   bssid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@bssid"));
@@ -87,17 +89,22 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   channel = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@channel"));
   sChannel = mrb_str_to_cstr(mrb, channel);
   wifiSet.Channel = atoi(sChannel);
-  display("channel %d", atoi(sChannel));
+  /*DEBUG*/
+  /*display("channel %d", atoi(sChannel));*/
 
   /*int Mode; [> Connection mode, 0:Station; 1:IBSS <]*/
   mode = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@mode"));
   sMode = mrb_str_to_cstr(mrb, mode);
   wifiSet.Mode = atoi(sMode);
+  /*DEBUG*/
+  /*display("mode %d", atoi(sMode));*/
 
   /*int AuthMode; [> Authentication modes <]*/
   authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
   sAuthentication = mrb_str_to_cstr(mrb, authentication);
   wifiSet.AuthMode = atoi(sAuthentication);
+  /*DEBUG*/
+  /*display("authmode %d", atoi(sAuthentication));*/
 
   /*WPA_PSK_KEY PskKey; [> For wpa,wpa2-psk authentication <]*/
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
@@ -106,10 +113,14 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   strcpy((char *)&psk.Key, sPassword);
   psk.KeyLen = strlen(sPassword);
   wifiSet.KeyUnion.PskKey = psk;
+  /*DEBUG*/
+  /*display("len %d key %s", wifiSet.KeyUnion.PskKey.KeyLen, wifiSet.KeyUnion.PskKey.Key);*/
 
   cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
   sCipher = mrb_str_to_cstr(mrb, cipher);
   wifiSet.SecMode = (int)sCipher[0];
+  /*DEBUG*/
+  /*display("cipher %d", (int)sCipher[0]);*/
 
   return mrb_fixnum_value(OsWifiConnect(&wifiSet, 1000));
 }
@@ -126,6 +137,8 @@ mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 
   ret = OsWifiCheck(&sEssid, &sBssid, &iRssi);
 
+  /*DEBUG*/
+  /*display("ret %d, Essid %s, Bssid %s, Rssi %d", ret, sEssid, sBssid, iRssi);*/
 
   if (ret == RET_OK) {
     mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), mrb_str_new_cstr(mrb, sEssid));
