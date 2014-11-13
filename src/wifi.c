@@ -59,7 +59,7 @@ static mrb_value
 mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 {
   mrb_value password, essid, bssid, channel, mode, authentication, cipher;
-  const char *sPassword, *sEssid, *sBssid;
+  const char *sPassword, *sEssid, *sBssid, *sChannel, *sCipher, *sMode, *sAuthentication;
 
   ST_WifiApSet wifiSet;
   WPA_PSK_KEY psk;
@@ -101,9 +101,11 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 
   cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
   wifiSet.SecMode = mrb_fixnum(cipher);
+  sCipher = mrb_str_to_cstr(mrb, cipher);
 
   /*WlPppLogin(sAPN, sUser, sPass, auth, timeout, keep_alive);*/
   /*OsWlLogin(sAPN, sUser, sPass, auth, timeout, keep_alive, NULL);*/
+  wifiSet.SecMode = (int)sCipher[0];
 
   return mrb_fixnum_value(OsWifiConnect(&wifiSet, 1000));
 }
