@@ -20,12 +20,12 @@ class Network
     AUTH_WPA2_PSK        = "9"
     AUTH_WPA2_EAP        = "10"
 
-    PARE_CIPHERS_NONE   = "0"
-    PARE_CIPHERS_WEP64  = "1"
-    PARE_CIPHERS_WEP128 = "2"
-    PARE_CIPHERS_WEPX   = "04"
-    PARE_CIPHERS_CCMP   = "10"
-    PARE_CIPHERS_TKIP   = "20"
+    PARE_CIPHERS_NONE   = 0x00.chr
+    PARE_CIPHERS_WEP64  = 0x01.chr
+    PARE_CIPHERS_WEP128 = 0x02.chr
+    PARE_CIPHERS_WEPX   = 0x04.chr
+    PARE_CIPHERS_CCMP   = 0x10.chr
+    PARE_CIPHERS_TKIP   = 0x20.chr
 
     MODE_IBSS    = "1"
     MODE_STATION = "0"
