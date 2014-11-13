@@ -145,7 +145,6 @@ mrb_init_wifi(mrb_state* mrb)
 {
   struct RClass *network, *wifi;
 
-  network = mrb_define_class(mrb, "Network", mrb->object_class);
   network = mrb_class_get(mrb, "Network");
   wifi    = mrb_define_class(mrb, "Wifi", network);
 
