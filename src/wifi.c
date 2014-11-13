@@ -156,7 +156,7 @@ mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
 }
 
 void
-mrb_init_wifi(mrb_state* mrb)
+mrb_init_wifi(mrb_state *mrb)
 {
   struct RClass *network, *wifi;
 
