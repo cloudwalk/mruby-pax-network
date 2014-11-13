@@ -63,23 +63,13 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 
   ST_WifiApSet wifiSet;
   WPA_PSK_KEY psk;
+  WEP_SEC_KEY wep;
+  WPA_EAP_KEY eap;
 
-  /*memset(psk, 0, sizeof(psk));*/
-  /*memset(wifiSet, 0, sizeof(wifiSet));*/
-
-  /*int AuthMode; [> Authentication modes <]*/
-  authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
-  wifiSet.AuthMode = mrb_fixnum(authentication);
-
-  password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
-  sPassword  = mrb_str_to_cstr(mrb, password);
-
-  /*WPA_PSK_KEY PskKey; [> For wpa,wpa2-psk authentication <]*/
-  if (wifiSet.AuthMode == AUTH_NONE_WEP && wifiSet.AuthMode == AUTH_NONE_WEP_SHARED) {
-    strcpy((char *)&psk.Key, sPassword);
-    psk.KeyLen = strlen(sPassword);
-    wifiSet.KeyUnion.PskKey = psk;
-  }
+  memset(&psk, 0, sizeof(psk));
+  memset(&eap, 0, sizeof(eap));
+  memset(&wep, 0, sizeof(wep));
+  memset(&wifiSet, 0, sizeof(wifiSet));
 
   /*char Essid[33]; [> AP name, it can support 32 bytes at most, and ending with '\0' <]*/
   essid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@essid"));
