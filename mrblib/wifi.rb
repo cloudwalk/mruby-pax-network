@@ -31,16 +31,30 @@ class Network
     MODE_STATION = "0"
 
     AUTHENTICATIONS = {
-      :open         => AUTH_NONE_OPEN,
-      :wep_none     => AUTH_NONE_WEP,
-      :wep_shared   => AUTH_NONE_WEP_SHARED,
-      :iEEE8021X    => AUTH_IEEE8021X,
-      :wpa_psk      => AUTH_WPA_PSK,
-      :wpa_eap      => AUTH_WPA_EAP,
-      :wpa_wpa2_psk => AUTH_WPA_WPA2_PSK,
-      :wpa_wpa2_eap => AUTH_WPA_WPA2_EAP,
-      :wpa2_psk     => AUTH_WPA2_PSK,
-      :wpa2_eap     => AUTH_WPA2_EAP
+      "open"         => AUTH_NONE_OPEN,
+      "wep"          => AUTH_NONE_WEP,
+      "wep_shared"   => AUTH_NONE_WEP_SHARED,
+      "iEEE8021X"    => AUTH_IEEE8021X,
+      "wpa_psk"      => AUTH_WPA_PSK,
+      "wpa_eap"      => AUTH_WPA_EAP,
+      "wpa_wpa2_psk" => AUTH_WPA_WPA2_PSK,
+      "wpa_wpa2_eap" => AUTH_WPA_WPA2_EAP,
+      "wpa2_psk"     => AUTH_WPA2_PSK,
+      "wpa2_eap"     => AUTH_WPA2_EAP
+    }
+
+    CIPHERS = {
+      "none"   => PARE_CIPHERS_NONE,
+      "wep64"  => PARE_CIPHERS_WEP64,
+      "wep128" => PARE_CIPHERS_WEP128,
+      "wepx"   => PARE_CIPHERS_WEPX,
+      "ccmp"   => PARE_CIPHERS_CCMP,
+      "tkip"   => PARE_CIPHERS_TKIP
+    }
+
+    MODES = {
+      "statio" => MODE_STATION,
+      "ibss"   => MODE_IBSS
     }
 
     def self.init(options = {})
