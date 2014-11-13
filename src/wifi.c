@@ -114,10 +114,12 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 {
-  char *sEssid, *sBssid;
-  mrb_int *iRssi, ret;
+  char sEssid[32+1] = "                                \0";
+  char sBssid[19+1] = "                   \0";
+  mrb_int iRssi, ret;
 
-  ret = OsWifiCheck(sEssid, sBssid, iRssi);
+  ret = OsWifiCheck(&sEssid, &sBssid, &iRssi);
+
 
   if (ret == RET_OK) {
     mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), mrb_str_new_cstr(mrb, sEssid));
