@@ -60,9 +60,9 @@ class Network
     def self.init(options = {})
       @essid          = options[:essid].to_s
       @bssid          = options[:bssid].to_s
-      @mode           = options[:mode].to_s
-      @authentication = options[:authentication].to_s
-      @cipher         = options[:cipher].to_s
+      @mode           = MODES[options[:mode]].to_s
+      @authentication = AUTHENTICATIONS[options[:authentication]].to_s
+      @cipher         = CIPHERS[options[:cipher]].to_s
       @password       = options[:password].to_s
       @channel        = options[:channel].to_s
       self.start
