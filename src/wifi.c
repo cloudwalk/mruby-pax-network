@@ -55,6 +55,8 @@ mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 }
 
 //TODO Scalone: Support blocking and non blocking connection with timeout modification
+//TODO Scalone: Check if parameters is string
+//TODO Scalone: Add more authentications mode
 static mrb_value
 mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 {
