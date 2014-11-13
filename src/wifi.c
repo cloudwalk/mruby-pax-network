@@ -83,18 +83,30 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 
   /*int Channel;  [> Channel, 0:Auto set <]*/
   channel = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@channel"));
-  wifiSet.Channel = mrb_fixnum(channel);
+  sChannel = mrb_str_to_cstr(mrb, channel);
+  wifiSet.Channel = atoi(sChannel);
+  display("channel %d", atoi(sChannel));
 
   /*int Mode; [> Connection mode, 0:Station; 1:IBSS <]*/
   mode = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@mode"));
-  wifiSet.Mode = mrb_fixnum(mode);
+  sMode = mrb_str_to_cstr(mrb, mode);
+  wifiSet.Mode = atoi(sMode);
+
+  /*int AuthMode; [> Authentication modes <]*/
+  authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
+  sAuthentication = mrb_str_to_cstr(mrb, authentication);
+  wifiSet.AuthMode = atoi(sAuthentication);
+
+  /*WPA_PSK_KEY PskKey; [> For wpa,wpa2-psk authentication <]*/
+  password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
+  sPassword = mrb_str_to_cstr(mrb, password);
+
+  strcpy((char *)&psk.Key, sPassword);
+  psk.KeyLen = strlen(sPassword);
+  wifiSet.KeyUnion.PskKey = psk;
 
   cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
-  wifiSet.SecMode = mrb_fixnum(cipher);
   sCipher = mrb_str_to_cstr(mrb, cipher);
-
-  /*WlPppLogin(sAPN, sUser, sPass, auth, timeout, keep_alive);*/
-  /*OsWlLogin(sAPN, sUser, sPass, auth, timeout, keep_alive, NULL);*/
   wifiSet.SecMode = (int)sCipher[0];
 
   return mrb_fixnum_value(OsWifiConnect(&wifiSet, 1000));
