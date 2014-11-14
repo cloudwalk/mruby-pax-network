@@ -1,5 +1,13 @@
 
 class Network
+  NET_LINK_ETH       = 1 # Ethernet
+  NET_LINK_ETH1      = 2 # USB Ethernet
+  NET_LINK_WL        = 3 # GPRS,CDMA,TDSCDMA
+  NET_LINK_WIFI      = 4 # WiFi
+  NET_LINK_PPPOE     = 5 # ADSL
+  NET_LINK_MODEM     = 6 # Modem PPP
+  NET_LINK_PPPDIRECT = 7 # ppp_direct
+
   class << self
     attr_accessor :interface
   end
