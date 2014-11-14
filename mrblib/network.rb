@@ -25,6 +25,15 @@ class Network
     @interface.init(options)
   end
 
+  # TODO Scalone: Raise error if problem or do not exists
+  def self.dhcp_client_start
+    self._dhcp_client_start(@interface.type)
+  end
+
+  def self.dhcp_client_check
+    self._dhcp_client_check(@interface.type)
+  end
+
   def self.method_missing(method, *args, &block)
     if @interface.respond_to? method
       @interface.send(method, *args, &block)
