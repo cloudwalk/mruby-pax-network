@@ -39,7 +39,12 @@ mrb_network__ping(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_dhcp_client_start(mrb_state *mrb, mrb_value klass)
 {
-  return mrb_fixnum_value(OsNetStartDhcp(NET_LINK_WIFI));
+  mrb_int net;
+  mrb_get_args(mrb, "i", &net);
+
+  return mrb_fixnum_value(OsNetStartDhcp(net));
+}
+
 }
 
 void
@@ -50,6 +55,6 @@ mrb_init_network(mrb_state* mrb)
   network = mrb_define_class(mrb, "Network", mrb->object_class);
 
   mrb_define_class_method(mrb, network, "_ping", mrb_network__ping, MRB_ARGS_REQ(2));
-  mrb_define_class_method(mrb, network, "_dhcp_client_start", mrb_wifi_dhcp_client_start, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, network, "_dhcp_client_start", mrb_wifi_dhcp_client_start, MRB_ARGS_REQ(1));
 }
 
