@@ -16,6 +16,10 @@ class Network
       @apn      = options[:apn]
       self.start
     end
+
+    def self.type
+      Network::NET_LINK_WL
+    end
   end
 end
 
