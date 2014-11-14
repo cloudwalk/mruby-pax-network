@@ -1,24 +1,3 @@
-/*
-** network.c - Network module
-**
-** Network.init(GPRS, apn: claro.com.br, user: claro.com.br, pass: claro.com.br)
-**   WlSwitchPower(1);
-**   WlInit(NULL);
-** Network.power true/false
-**   WlSwitchPower(1);
-** Network.connect(block = true/false)
-**   WlPppLogin(sAPN,sUser,sPwd,0xff,0,0);
-** Network.connected?
-**   WlPppCheck();
-** Network.disconnect
-**   WlPppLogout();
-**   WlSwitchPower(0);
-**
-** Network.apn, user, pass, type
-**
-** See Copyright Notice in mruby.h
-*/
-
 #include "mruby.h"
 #include <stddef.h>
 #include <string.h>
@@ -44,7 +23,7 @@ mrb_wifi_start(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(OsWifiOpen());
 }
 
-//TODO Scalone: Check if Power is necessary before init
+/*TODO Scalone: Check if Power is necessary before init*/
 static mrb_value
 mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 {
@@ -72,9 +51,9 @@ isPSK(int AuthMode)
     return 0;
 }
 
-//TODO Scalone: Support blocking and non blocking connection with timeout modification
-//TODO Scalone: Check if parameters is string
-//TODO Scalone: Add more authentications mode
+/*TODO Scalone: Support blocking and non blocking connection with timeout modification*/
+/*TODO Scalone: Check if parameters is string*/
+/*TODO Scalone: Add more authentications mode*/
 static mrb_value
 mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 {
@@ -149,9 +128,9 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(OsWifiConnect(&wifiSet, 1000));
 }
 
-//   0 -> Sucess
-//   1 -> In Progress
-// < 0 -> Fail
+/*0   -> Sucess*/
+/*1   -> In Progress*/
+/*< 0 -> Fail*/
 static mrb_value
 mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 {
