@@ -68,6 +68,9 @@ class Network
       self.start
     end
 
+    def self.type
+      Network::NET_LINK_WIFI
+    end
   end
 end
 
