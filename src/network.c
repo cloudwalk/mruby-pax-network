@@ -29,11 +29,16 @@ static mrb_value
 mrb_network__ping(mrb_state *mrb, mrb_value klass)
 {
   mrb_value ip;
-  mrb_int timeout;
+  mrb_int timeout, ret;
+  char sIp[16]={0x00};
 
   mrb_get_args(mrb, "Si", &ip, &timeout);
 
-  return mrb_fixnum_value(OsNetPing(RSTRING_PTR(ip), timeout));
+  strncpy(&sIp, RSTRING_PTR(ip), RSTRING_LEN(ip)); 
+
+  ret = OsNetPing(sIp, (int)timeout);
+
+  return mrb_fixnum_value(ret);
 }
 
 static mrb_value
