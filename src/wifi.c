@@ -20,7 +20,12 @@
 static mrb_value
 mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
-  return mrb_fixnum_value(OsWifiOpen());
+  mrb_int ret=RET_OK;
+
+  ret = OsWifiOpen();
+  if (ret == RET_OK) OsNetSetRoute(NET_LINK_WIFI);
+
+  return mrb_fixnum_value(ret);
 }
 
 /*TODO Scalone: Check if Power is necessary before init*/
