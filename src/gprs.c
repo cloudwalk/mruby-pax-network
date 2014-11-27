@@ -41,7 +41,12 @@
 static mrb_value
 mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 {
-  return mrb_fixnum_value(OsWlInit(NULL));
+  mrb_int ret=RET_OK;
+
+  ret = OsWlInit(NULL);
+  if (ret == 0) OsNetSetRoute(NET_LINK_WL);
+
+  return mrb_fixnum_value(ret);
 }
 
 //TODO Scalone: Check if Power is necessary before init
