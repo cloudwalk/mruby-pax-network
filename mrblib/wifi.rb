@@ -31,16 +31,16 @@ class Network
     MODE_STATION = "0"
 
     AUTHENTICATIONS = {
-      "open"         => AUTH_NONE_OPEN,
-      "wep"          => AUTH_NONE_WEP,
-      "wep_shared"   => AUTH_NONE_WEP_SHARED,
-      "iEEE8021X"    => AUTH_IEEE8021X,
-      "wpa_psk"      => AUTH_WPA_PSK,
-      "wpa_eap"      => AUTH_WPA_EAP,
-      "wpa_wpa2_psk" => AUTH_WPA_WPA2_PSK,
-      "wpa_wpa2_eap" => AUTH_WPA_WPA2_EAP,
-      "wpa2_psk"     => AUTH_WPA2_PSK,
-      "wpa2_eap"     => AUTH_WPA2_EAP
+      "open"       => AUTH_NONE_OPEN,
+      "wep"        => AUTH_NONE_WEP,
+      "wep_shared" => AUTH_NONE_WEP_SHARED,
+      "iEEE8021X"  => AUTH_IEEE8021X,
+      "wpapsk"     => AUTH_WPA_PSK,
+      "wpaeap"     => AUTH_WPA_EAP,
+      "wpawpa2psk" => AUTH_WPA_WPA2_PSK,
+      "wpawpa2eap" => AUTH_WPA_WPA2_EAP,
+      "wpa2psk"    => AUTH_WPA2_PSK,
+      "wpa2eap"    => AUTH_WPA2_EAP
     }
 
     CIPHERS = {
