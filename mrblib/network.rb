@@ -14,6 +14,10 @@ class Network
     attr_accessor :interface
   end
 
+  def self.started?
+    ! @interface.nil?
+  end
+
   def self.ping(host, timeout)
     _ping TCPSocket.getaddress(host), timeout
   end
