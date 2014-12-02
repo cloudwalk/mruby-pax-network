@@ -7,6 +7,8 @@ class Network
   NET_LINK_PPPOE     = 5 # ADSL
   NET_LINK_MODEM     = 6 # Modem PPP
   NET_LINK_PPPDIRECT = 7 # ppp_direct
+  MEDIA_GPRS         = "gprs"
+  MEDIA_WIFI         = "wifi"
 
   class << self
     attr_accessor :interface
@@ -17,7 +19,7 @@ class Network
   end
 
   def self.init(media, options)
-    if media == :gprs
+    if media == MEDIA_GPRS
       @interface = Network::Gprs
     else
       @interface = Network::Wifi
