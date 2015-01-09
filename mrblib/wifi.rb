@@ -53,8 +53,8 @@ class Network
     }
 
     MODES = {
-      "statio" => MODE_STATION,
-      "ibss"   => MODE_IBSS
+      "station" => MODE_STATION,
+      "ibss"    => MODE_IBSS
     }
 
     def self.init(options = {})
