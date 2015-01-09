@@ -78,7 +78,6 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
   sPass = mrb_str_to_cstr(mrb, password);
 
-  /*WlPppLogin(sAPN, sUser, sPass, auth, timeout, keep_alive);*/
   OsWlLogin(sAPN, sUser, sPass, auth, timeout, keep_alive, NULL);
 
   return mrb_fixnum_value(0);
@@ -90,14 +89,12 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
 {
-  /*return mrb_fixnum_value(WlPppCheck());*/
   return mrb_fixnum_value(OsWlCheck());
 }
 
 static mrb_value
 mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  /*WlLogout();*/
   OsWlLogout();
   return mrb_true_value();
 }
