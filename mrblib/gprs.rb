@@ -1,6 +1,7 @@
 
 class Network
   Gprs = ::Gprs
+
   class Gprs
     class << self
       attr_accessor :password, :user, :apn
@@ -12,8 +13,6 @@ class Network
       @apn      = options[:apn]
       @user     = options[:user]
       @password = options[:password]
-      @apn      = options[:apn]
-      @apn      = options[:apn]
       self.start
     end
 
