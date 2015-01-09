@@ -68,20 +68,20 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
 {
   mrb_value apn, user, password;
   const char *sAPN, *sUser, *sPass;
-  int keep_alive=0, timeout=0, auth=0xff;
+  int keep_alive=300000, timeout=0, ret=0;
 
-  apn = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@apn"));
+  apn   = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@apn"));
   sAPN  = mrb_str_to_cstr(mrb, apn);
 
-  user = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@user"));
+  user  = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@user"));
   sUser = mrb_str_to_cstr(mrb, user);
 
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
-  sPass = mrb_str_to_cstr(mrb, password);
+  sPass    = mrb_str_to_cstr(mrb, password);
 
-  OsWlLogin(sAPN, sUser, sPass, auth, timeout, keep_alive, NULL);
+  ret = OsWlLogin(sAPN, sUser, sPass, 0xff, timeout, keep_alive, NULL);
 
-  return mrb_fixnum_value(0);
+  return mrb_fixnum_value(ret);
 }
 
 //   0 -> Sucess
