@@ -3,7 +3,7 @@
 **
 ** Network.ping
 **   NetPing();
-** 
+**
 */
 
 #include "mruby.h"
@@ -34,7 +34,7 @@ mrb_network__ping(mrb_state *mrb, mrb_value klass)
 
   mrb_get_args(mrb, "Si", &ip, &timeout);
 
-  strncpy(&sIp, RSTRING_PTR(ip), RSTRING_LEN(ip)); 
+  strncpy(&sIp, RSTRING_PTR(ip), RSTRING_LEN(ip));
 
   ret = OsNetPing(sIp, (int)timeout);
 
