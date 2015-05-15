@@ -7,8 +7,10 @@ class Network
   NET_LINK_PPPOE     = 5 # ADSL
   NET_LINK_MODEM     = 6 # Modem PPP
   NET_LINK_PPPDIRECT = 7 # ppp_direct
+
   MEDIA_GPRS         = "gprs"
   MEDIA_WIFI         = "wifi"
+  MEDIA_ETHERNET     = "ethernet"
 
   class << self
     attr_accessor :interface
@@ -25,8 +27,12 @@ class Network
   def self.init(media, options)
     if media == MEDIA_GPRS
       @interface = Network::Gprs
-    else
+    elsif media == MEDIA_WIFI
       @interface = Network::Wifi
+    elsif media == MEDIA_ETHERNET
+      @interface = Network::Ethernet
+    else
+      raise ArgumentError, "Media \"#{media}\" not supported"
     end
     @interface.init(options)
   end
