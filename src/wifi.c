@@ -134,7 +134,7 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(OsWifiConnect(&wifiSet, 60000));
 }
 
-/*0   -> Sucess*/
+/*0   -> Success*/
 /*1   -> In Progress*/
 /*< 0 -> Fail*/
 static mrb_value

@@ -84,7 +84,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(ret);
 }
 
-//   0 -> Sucess
+//   0 -> Success
 //   1 -> In Progress
 // < 0 -> Fail
 static mrb_value
