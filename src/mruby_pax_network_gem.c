@@ -12,6 +12,7 @@ mrb_mruby_pax_network_gem_init(mrb_state* mrb)
   mrb_init_network(mrb); DONE;
   mrb_init_gprs(mrb); DONE;
   mrb_init_wifi(mrb); DONE;
+  mrb_init_ethernet(mrb); DONE;
 }
 
 void
