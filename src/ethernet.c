@@ -60,7 +60,7 @@ mrb_init_ethernet(mrb_state *mrb)
   struct RClass *network, *ethernet;
 
   network  = mrb_class_get(mrb, "Network");
-  ethernet = mrb_define_class(mrb, "Ethernet", network);
+  ethernet = mrb_define_class_under(mrb, network, "Ethernet", mrb->object_class);
 
   mrb_define_class_method(mrb , ethernet , "_start"      , mrb_ethernet_start       , MRB_ARGS_NONE());
   mrb_define_class_method(mrb , ethernet , "_power"      , mrb_ethernet_power       , MRB_ARGS_REQ(1));
