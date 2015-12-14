@@ -100,6 +100,17 @@ mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
   return mrb_true_value();
 }
 
+/*Must to return the signal value between 1 and 5*/
+static mrb_value
+mrb_gprs_signal(mrb_state *mrb, mrb_value klass)
+{
+  mrb_int ret = OsWlGetSignal();
+  if (ret <= 0)
+    return mrb_fixnum_value(0);
+  else
+    return mrb_fixnum_value(ret);
+}
+
 void
 mrb_init_gprs(mrb_state* mrb)
 {
@@ -113,5 +124,6 @@ mrb_init_gprs(mrb_state* mrb)
   mrb_define_class_method(mrb, gprs, "connect", mrb_gprs_connect, MRB_ARGS_OPT(1));
   mrb_define_class_method(mrb, gprs, "connected?", mrb_gprs_connected_m, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, gprs, "disconnect", mrb_gprs_disconnect, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, gprs, "signal", mrb_gprs_signal, MRB_ARGS_NONE());
 }
 

@@ -69,6 +69,11 @@ class Network
     def self.type
       Network::NET_LINK_WIFI
     end
+
+    def self.signal
+      @rssi
+    end
+
   end
 end
 
