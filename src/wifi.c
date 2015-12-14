@@ -142,7 +142,7 @@ mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
 {
   char sEssid[32+1] = "                                \0";
   char sBssid[19+1] = "                   \0";
-  mrb_int iRssi, ret;
+  mrb_int iRssi=0, ret;
 
   ret = OsWifiCheck(&sEssid, &sBssid, &iRssi);
 
