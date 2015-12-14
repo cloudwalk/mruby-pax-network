@@ -2,8 +2,8 @@
 class Network
   class Wifi
     class << self
-      attr_accessor :bssid, :essid, :rssi, :authentication, :password, :essid, :bssid, :channel, :mode, :cipher
       attr_reader :media
+      attr_accessor :rssi, :authentication, :password, :essid, :bssid, :channel, :mode, :cipher
       @media = :wifi
     end
 
