@@ -164,6 +164,30 @@ mrb_wifi_disconnect(mrb_state *mrb, mrb_value klass)
   return mrb_fixnum_value(OsWifiDisconnect());
 }
 
+static mrb_value
+mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
+{
+  ST_WifiApInfo * aps;
+  mrb_int ret = 0, i = 0;
+
+  ret = OsWifiScan(&aps);
+
+  if (ret < 0) return mrb_false_value();
+
+  for (i=0;i < ret;i++) {
+    mrb_funcall(mrb, klass, "ap", 7,
+        mrb_str_new_cstr(mrb, aps[i].Essid),
+        mrb_str_new_cstr(mrb, aps[i].Bssid),
+        mrb_fixnum_value(aps[i].Channel),
+        mrb_fixnum_value(aps[i].Mode),
+        mrb_fixnum_value(aps[i].Rssi),
+        mrb_fixnum_value(aps[i].AuthMode),
+        mrb_fixnum_value(aps[i].SecMode)
+        );
+  }
+  return mrb_true_value();
+}
+
 void
 mrb_init_wifi(mrb_state *mrb)
 {
@@ -177,5 +201,6 @@ mrb_init_wifi(mrb_state *mrb)
   mrb_define_class_method(mrb, wifi, "connect", mrb_wifi_connect, MRB_ARGS_OPT(1));
   mrb_define_class_method(mrb, wifi, "connected?", mrb_wifi_connected_m, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, wifi, "disconnect", mrb_wifi_disconnect, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, wifi, "_scan", mrb_wifi__scan, MRB_ARGS_NONE());
 }
 

@@ -2,8 +2,8 @@
 class Network
   class Wifi
     class << self
-      attr_reader :media
       attr_accessor :rssi, :authentication, :password, :essid, :bssid, :channel, :mode, :cipher
+      attr_reader :media, :aps
       @media = :wifi
     end
 
@@ -40,6 +40,7 @@ class Network
       "wpa2psk"    => AUTH_WPA2_PSK,
       "wpa2eap"    => AUTH_WPA2_EAP
     }
+    INVERTED_AUTHENTICATIONS = AUTHENTICATIONS.invert
 
     CIPHERS = {
       "none"   => PARE_CIPHERS_NONE,
@@ -49,11 +50,13 @@ class Network
       "ccmp"   => PARE_CIPHERS_CCMP,
       "tkip"   => PARE_CIPHERS_TKIP
     }
+    INVERTED_CIPHERS = CIPHERS.invert
 
     MODES = {
       "station" => MODE_STATION,
       "ibss"    => MODE_IBSS
     }
+    INVERTED_MODES = MODES.invert
 
     def self.init(options = {})
       @essid          = options[:essid].to_s
@@ -74,6 +77,24 @@ class Network
       @rssi
     end
 
+    def self.scan
+      @aps = []
+      self._scan
+      @aps
+    end
+
+    def self.ap(_essid, _bssid, _channel, _mode, _rssi, _authentication, _cipher)
+      @aps ||= []
+      @aps << {
+        :essid          => _essid,
+        :bssid          => _bssid,
+        :channel        => _channel.to_s,
+        :mode           => INVERTED_MODES[_mode.to_s],
+        :rssi           => _rssi,
+        :authentication => INVERTED_AUTHENTICATIONS[_authentication.to_s],
+        :cipher         => INVERTED_CIPHERS[_cipher.chr]
+      }
+    end
   end
 end
 
