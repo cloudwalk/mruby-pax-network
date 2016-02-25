@@ -108,7 +108,7 @@ mrb_gprs_signal(mrb_state *mrb, mrb_value klass)
   if (ret <= 0)
     return mrb_fixnum_value(0);
   else
-    return mrb_fixnum_value(ret);
+    return mrb_fixnum_value(ret*20);
 }
 
 void
