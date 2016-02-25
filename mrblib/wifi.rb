@@ -74,7 +74,11 @@ class Network
     end
 
     def self.signal
-      @rssi
+      if @rssi
+        2 * (@rssi.to_i + 100)
+      else
+        0
+      end
     end
 
     def self.scan
