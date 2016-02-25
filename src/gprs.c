@@ -79,7 +79,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
   password = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@password"));
   sPass    = mrb_str_to_cstr(mrb, password);
 
-  ret = OsWlLogin(sAPN, sUser, sPass, 0xff, timeout, keep_alive, NULL);
+  ret = OsWlLogin(sAPN, sUser, sPass, 0xff, timeout, keep_alive, 0);
 
   return mrb_fixnum_value(ret);
 }
