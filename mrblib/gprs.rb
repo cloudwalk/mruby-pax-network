@@ -17,6 +17,10 @@ class Network
     def self.type
       Network::NET_LINK_WL
     end
+
+    def self.sim_id
+      ""
+    end
   end
 end
 

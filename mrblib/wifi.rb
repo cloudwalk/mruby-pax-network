@@ -99,6 +99,10 @@ class Network
         :cipher         => INVERTED_CIPHERS[_cipher.chr]
       }
     end
+
+    def self.sim_id
+      ""
+    end
   end
 end
 

@@ -65,6 +65,11 @@ class Network
       # not supported by the SDK
       0
     end
+
+    def self.sim_id
+      ""
+    end
+
   end
 end
 
