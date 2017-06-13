@@ -18,8 +18,69 @@ class Network
       Network::NET_LINK_WL
     end
 
+    def self.cell
+      cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
+        {
+          :mcc => self.mcc(serial),
+          :mnc => self.mnc(serial),
+          :lac => self.lac(serial),
+          :cell_id => self.cell_id(serial),
+        }
+      end
+    end
+
+    def self.mcc(serial)
+      if result = serial.command("AT+cimi\r").to_s.match(/\+CIMI: (.+)/)
+        @cimi = result[1]
+        result[1][0..2]
+      else
+        @cimi[0..2] if @cimi
+      end
+    end
+
+    def self.mnc(serial)
+      if result = serial.command("AT+cimi\r").to_s.match(/\+CIMI: (.+)/)
+        @cimi = result[1]
+        result[1][3..4]
+      else
+        @cimi[3..4] if @cimi
+      end
+    end
+
+    def self.lac(serial)
+      serial.command("AT+CREG=2\r")
+      if result = serial.command("AT+CREG?\r").to_s.match(/"(.+)","(.+)"/)
+        @creg = result[0]
+        result[1]
+      else
+        if result = @creg.to_s.match(/"(.+)","(.+)"/)
+          result[1]
+        end
+      end
+    end
+
+    def self.cell_id(serial)
+      serial.command("AT+CREG=2\r")
+      if result = serial.command("AT+CREG?\r").to_s.match(/"(.+)","(.+)"/)
+        @creg = result[0]
+        result[2]
+      else
+        if result = @creg.to_s.match(/"(.+)","(.+)"/)
+          result[2]
+        end
+      end
+    end
+
     def self.sim_id
       ""
+    end
+
+    private
+    def self.cmd_at(*args, &block)
+      serial = PAX::Serial.new(*args)
+      block.call(serial)
+    ensure
+      serial.close if serial
     end
   end
 end
