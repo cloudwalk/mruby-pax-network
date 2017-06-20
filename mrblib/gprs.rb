@@ -77,10 +77,13 @@ class Network
 
     private
     def self.cmd_at(*args, &block)
-      serial = PAX::Serial.new(*args)
-      block.call(serial)
+      ContextLog.info args.inspect
+      if PAX::Network.interface == PAX::Network::Gprs
+        serial = PAX::Serial.new(*args)
+        block.call(serial)
+      end
     ensure
-      serial.close if serial
+      serial.close if serial && serial.respond_to?(:close)
     end
   end
 end
