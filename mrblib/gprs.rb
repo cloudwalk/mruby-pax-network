@@ -77,7 +77,6 @@ class Network
 
     private
     def self.cmd_at(*args, &block)
-      ContextLog.info args.inspect
       if PAX::Network.interface == PAX::Network::Gprs
         serial = PAX::Serial.new(*args)
         block.call(serial)
