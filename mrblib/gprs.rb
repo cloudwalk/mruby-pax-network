@@ -30,7 +30,7 @@ class Network
     end
 
     def self.mcc(serial)
-      if result = serial.command("AT+cimi\r").to_s.match(/\+CIMI: (.+)/)
+      if result = serial.command("AT+cimi\r", 40).to_s.match(/\+CIMI: (.+)/)
         @cimi = result[1]
         result[1][0..2]
       else
@@ -39,7 +39,7 @@ class Network
     end
 
     def self.mnc(serial)
-      if result = serial.command("AT+cimi\r").to_s.match(/\+CIMI: (.+)/)
+      if result = serial.command("AT+cimi\r", 40).to_s.match(/\+CIMI: (.+)/)
         @cimi = result[1]
         result[1][3..4]
       else
@@ -48,8 +48,8 @@ class Network
     end
 
     def self.lac(serial)
-      serial.command("AT+CREG=2\r")
-      if result = serial.command("AT+CREG?\r").to_s.match(/"(.+)","(.+)"/)
+      serial.command("AT+CREG=2\r", 16)
+      if result = serial.command("AT+CREG?\r", 43).to_s.match(/"(.+)","(.+)"/)
         @creg = result[0]
         result[1]
       else
@@ -60,8 +60,8 @@ class Network
     end
 
     def self.cell_id(serial)
-      serial.command("AT+CREG=2\r")
-      if result = serial.command("AT+CREG?\r").to_s.match(/"(.+)","(.+)"/)
+      serial.command("AT+CREG=2\r", 16)
+      if result = serial.command("AT+CREG?\r", 43).to_s.match(/"(.+)","(.+)"/)
         @creg = result[0]
         result[2]
       else
