@@ -54,12 +54,13 @@ mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_gprs_power(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int on;
-  mrb_get_args(mrb, "i", &on);
+  mrb_int state=1, ret=0;
+  mrb_get_args(mrb, "i", &state);
 
-  OsWlSwitchPower(on);
+  ret = OsWlSwitchPower(state);
+  if (state == 0) OsWlUnLock();
 
-  return mrb_true_value();
+  return mrb_fixnum_value(ret);
 }
 
 //TODO Scalone: Support blocking and non blocking connection with timeout modification

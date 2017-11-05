@@ -32,10 +32,13 @@ mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_wifi_power(mrb_state *mrb, mrb_value klass)
 {
-  mrb_int state;
+  mrb_int state=1, ret=0;
   mrb_get_args(mrb, "i", &state);
 
-  return mrb_fixnum_value(OsWifiSwitchPower(state));
+  ret = OsWifiSwitchPower(state);
+  if (state == 0) OsWifiClose();
+
+  return mrb_fixnum_value(ret);
 }
 
 static int
