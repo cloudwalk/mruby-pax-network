@@ -134,7 +134,7 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   /*display("cipher %d", (int)sCipher[0]);*/
 
   /*TODO Scalone timeout must come from DaFunk.*/
-  return mrb_fixnum_value(OsWifiConnect(&wifiSet, 60000));
+  return mrb_fixnum_value(OsWifiConnect(&wifiSet, 0));
 }
 
 /*0   -> Success*/
