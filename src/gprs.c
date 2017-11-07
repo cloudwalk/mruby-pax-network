@@ -97,8 +97,7 @@ mrb_gprs_connected_m(mrb_state *mrb, mrb_value klass)
 static mrb_value
 mrb_gprs_disconnect(mrb_state *mrb, mrb_value klass)
 {
-  OsWlLogout();
-  return mrb_true_value();
+  return mrb_fixnum_value(OsWlLogout());
 }
 
 /*Must to return the signal value between 1 and 5*/
