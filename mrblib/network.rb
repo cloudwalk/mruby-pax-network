@@ -25,11 +25,12 @@ class Network
   end
 
   def self.init(media, options)
-    if media == MEDIA_GPRS
+    case media.to_s.downcase.strip
+    when MEDIA_GPRS
       @interface = Network::Gprs
-    elsif media == MEDIA_WIFI
+    when MEDIA_WIFI
       @interface = Network::Wifi
-    elsif media == MEDIA_ETHERNET
+    when MEDIA_ETHERNET
       @interface = Network::Ethernet
     else
       raise ArgumentError, "Media \"#{media}\" not supported"
