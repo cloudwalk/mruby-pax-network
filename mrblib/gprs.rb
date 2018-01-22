@@ -20,6 +20,7 @@ class Network
 
     def self.cell
       cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
+        @sim_id ||= self.get_sim_id(serial)
         {
           :mcc => self.mcc(serial),
           :mnc => self.mnc(serial),
@@ -72,10 +73,27 @@ class Network
     end
 
     def self.sim_id
-      ""
+      @sim_id ||= self.get_sim_id
     end
 
     private
+    def self.get_sim_id(serial = nil)
+      block = Proc.new do |serial|
+        response = serial.command("AT+CCID\r", 33)
+        if result = response.to_s.match(/\+CCID: (.+)/)
+          result[1]
+        end
+      end
+
+      if serial
+        block.call(serial)
+      else
+        cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
+          block.call(serial)
+        end
+      end
+    end
+
     def self.cmd_at(*args, &block)
       if PAX::Network.interface == PAX::Network::Gprs
         serial = PAX::Serial.new(*args)
