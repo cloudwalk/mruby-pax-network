@@ -175,7 +175,7 @@ mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
 
   ret = OsWifiScan(&aps);
 
-  if (ret < 0) return mrb_false_value();
+  if (ret < 0) return mrb_fixnum_value(ret);
 
   for (i=0;i < ret;i++) {
     mrb_funcall(mrb, klass, "ap", 7,
@@ -188,7 +188,7 @@ mrb_wifi__scan(mrb_state *mrb, mrb_value klass)
         mrb_fixnum_value(aps[i].SecMode)
         );
   }
-  return mrb_true_value();
+  return mrb_fixnum_value(RET_OK);
 }
 
 void
