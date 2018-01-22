@@ -43,6 +43,9 @@ mrb_gprs_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=RET_OK;
 
+  OsWifiClose();
+  OsWifiSwitchPower(0);
+
   ret = OsWlLock();
   if (ret == RET_OK) ret = OsWlInit(NULL);
   if (ret == RET_OK) OsNetSetRoute(NET_LINK_WL);
