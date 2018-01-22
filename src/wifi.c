@@ -22,6 +22,9 @@ mrb_wifi_start(mrb_state *mrb, mrb_value klass)
 {
   mrb_int ret=RET_OK;
 
+  OsWlSwitchPower(0);
+  OsWlUnLock();
+
   ret = OsWifiOpen();
   if (ret == RET_OK) OsNetSetRoute(NET_LINK_WIFI);
 
