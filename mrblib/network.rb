@@ -25,6 +25,11 @@ class Network
   end
 
   def self.init(media, options)
+    self.configure(media, options)
+    @interface.init(options)
+  end
+
+  def self.configure(media, options)
     case media.to_s.downcase.strip
     when MEDIA_GPRS
       @interface = Network::Gprs
@@ -35,7 +40,6 @@ class Network
     else
       raise ArgumentError, "Media \"#{media}\" not supported"
     end
-    @interface.init(options)
   end
 
   # TODO Scalone: Raise error if problem or do not exists
