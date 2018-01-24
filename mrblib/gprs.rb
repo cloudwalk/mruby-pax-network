@@ -76,20 +76,18 @@ class Network
       @sim_id ||= self.get_sim_id
     end
 
-    private
     def self.get_sim_id(serial = nil)
-      block = Proc.new do |serial|
+      if serial
         response = serial.command("AT+CCID\r", 33)
         if result = response.to_s.match(/\+CCID: (.+)/)
           result[1]
         end
-      end
-
-      if serial
-        block.call(serial)
       else
         cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
-          block.call(serial)
+          response = serial.command("AT+CCID\r", 33)
+          if result = response.to_s.match(/\+CCID: (.+)/)
+            result[1]
+          end
         end
       end
     end
@@ -104,4 +102,3 @@ class Network
     end
   end
 end
-
