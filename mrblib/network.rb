@@ -51,6 +51,19 @@ class Network
     self._dhcp_client_check(@interface.type)
   end
 
+  def self.connected?
+    if @interface
+      if @connected && @connected_check_timeout.is_a?(Time) && (@connected_check_timeout > Time.now)
+        @connected
+      else
+        @connected_check_timeout = (Time.now + 5)
+        @connected = @interface.connected?
+      end
+    else
+      -1012
+    end
+  end
+
   def self.method_missing(method, *args, &block)
     if @interface.respond_to? method
       @interface.send(method, *args, &block)
