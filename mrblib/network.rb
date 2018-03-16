@@ -52,15 +52,14 @@ class Network
   end
 
   def self.connected?
-    if @interface
-      if @connected && @connected_check_timeout.is_a?(Time) && (@connected_check_timeout > Time.now)
-        @connected
+    if self.started?
+      if @connected_value && @connected_check_timeout.is_a?(Time) && (@connected_check_timeout > Time.now)
+        @connected_value
       else
-        @connected_check_timeout = (Time.now + 5)
-        @connected = @interface.connected?
+        @connected_value = @interface.connected?
       end
     else
-      -1012
+      -3307
     end
   end
 
