@@ -83,34 +83,54 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 
   /*char Essid[33]; [> AP name, it can support 32 bytes at most, and ending with '\0' <]*/
   essid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@essid"));
-  sEssid = mrb_str_to_cstr(mrb, essid);
-  strcpy((char *)&wifiSet.Essid, sEssid);
+  if (mrb_string_p(essid) && (RSTRING_LEN(essid) > 0)) {
+    sEssid = mrb_str_to_cstr(mrb, essid);
+    strcpy((char *)&wifiSet.Essid, sEssid);
+  } else {
+    strncpy((char *)&wifiSet.Essid, "\0", 1);
+  }
   /*DEBUG*/
   /*display("essid %s", wifiSet.Essid);*/
 
   /*char Bssid[20]; [> MAC address, if there is no any APs with the same ESSID, Bssid can be "\0"<]*/
   bssid = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@bssid"));
-  sBssid = mrb_str_to_cstr(mrb, bssid);
-  strcpy((char *)&wifiSet.Bssid, sBssid);
+  if (mrb_string_p(bssid) && (RSTRING_LEN(bssid) > 0)) {
+    sBssid = mrb_str_to_cstr(mrb, bssid);
+    strcpy((char *)&wifiSet.Bssid, sBssid);
+  } else {
+    strncpy((char *)&wifiSet.Bssid, "\0", 1);
+  }
 
   /*int Channel;  [> Channel, 0:Auto set <]*/
   channel = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@channel"));
-  sChannel = mrb_str_to_cstr(mrb, channel);
-  wifiSet.Channel = atoi(sChannel);
+  if (mrb_string_p(channel) && (RSTRING_LEN(channel) > 0)) {
+    sChannel = mrb_str_to_cstr(mrb, channel);
+    wifiSet.Channel = atoi(sChannel);
+  } else {
+    wifiSet.Channel = 0;
+  }
   /*DEBUG*/
   /*display("channel %d", atoi(sChannel));*/
 
   /*int Mode; [> Connection mode, 0:Station; 1:IBSS <]*/
   mode = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@mode"));
-  sMode = mrb_str_to_cstr(mrb, mode);
-  wifiSet.Mode = atoi(sMode);
+  if (mrb_string_p(mode) && (RSTRING_LEN(mode) > 0)) {
+    sMode = mrb_str_to_cstr(mrb, mode);
+    wifiSet.Mode = atoi(sMode);
+  } else {
+    wifiSet.Mode = 0;
+  }
   /*DEBUG*/
   /*display("mode %d", atoi(sMode));*/
 
   /*int AuthMode; [> Authentication modes <]*/
   authentication = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@authentication"));
-  sAuthentication = mrb_str_to_cstr(mrb, authentication);
-  wifiSet.AuthMode = atoi(sAuthentication);
+  if (mrb_string_p(authentication) && (RSTRING_LEN(authentication) > 0)) {
+    sAuthentication = mrb_str_to_cstr(mrb, authentication);
+    wifiSet.AuthMode = atoi(sAuthentication);
+  } else {
+    wifiSet.AuthMode = 1;
+  }
   /*DEBUG*/
   /*display("authmode %d", atoi(sAuthentication));*/
 
@@ -131,8 +151,12 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
   /*display("len %d key %s", wifiSet.KeyUnion.PskKey.KeyLen, wifiSet.KeyUnion.PskKey.Key);*/
 
   cipher = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@cipher"));
-  sCipher = mrb_str_to_cstr(mrb, cipher);
-  wifiSet.SecMode = (int)sCipher[0];
+  if (mrb_string_p(cipher) && (RSTRING_LEN(cipher) > 0) && RSTRING_PTR(cipher)[0]) {
+    sCipher = mrb_str_to_cstr(mrb, cipher);
+    wifiSet.SecMode = (int)sCipher[0];
+  } else {
+    wifiSet.SecMode = 0;
+  }
   /*DEBUG*/
   /*display("cipher %d", (int)sCipher[0]);*/
 
