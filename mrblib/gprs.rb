@@ -92,6 +92,25 @@ class Network
       end
     end
 
+    def self.select_network(imsi_id)
+      cmd_at("/dev/mux1", 115200, 8, "N", 1, 20000) do |serial|
+        serial.command("AT+CMEE=2\r", 200) # Enable errors
+        response = serial.command("AT+COPS=0,2\r", 200)
+        ContextLog.info "AT+COPS=0,2: #{response}"
+        return response unless response.to_s.match(/\OK/)
+        response = serial.command("AT+COPS=4,2,\"#{imsi_id}\"\r", 200)
+        ContextLog.info "AT+COPS=4,2: #{response}"
+        unless response.to_s.match(/\OK/)
+          response = serial.command("AT+COPS=1,2,\"#{imsi_id}\"\r", 200)
+          ContextLog.info "AT+COPS=1,2: #{response}"
+          return response unless response.to_s.match(/\OK/)
+        end
+        response = serial.command("AT+CGATT=1\r", 200)
+        ContextLog.info "AT+CGATT=1: #{response}"
+        response
+      end
+    end
+
     def self.cmd_at(*args, &block)
       if PAX::Network.interface == PAX::Network::Gprs
         serial = PAX::Serial.new(*args)
