@@ -115,7 +115,6 @@ class Network
       }
       3.times do
         result = serial.command("#{command}\r", 200)
-        ContextLog.info "send_at_command: #{command}, result: #{result}"
         if result.to_s.match(/\OK/)
           response[:result] = "OK"
           response[:reason] = ""
