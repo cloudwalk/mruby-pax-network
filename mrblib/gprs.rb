@@ -92,6 +92,41 @@ class Network
       end
     end
 
+    def self.select_attach_network(imsi_id)
+      cmd_at("/dev/mux1", 115200, 8, "N", 1, 20000) do |serial|
+        response = self.send_at_command(serial, "AT+CMEE=2") # Enable errors
+        return response unless response[:result] == "OK"
+
+        response = self.send_at_command(serial, "AT+COPS=0,2")
+        return response unless response[:result] == "OK"
+
+        response = self.send_at_command(serial, "AT+COPS=4,2,\"#{imsi_id}\"")
+        return response unless response[:result] == "OK"
+
+        response = self.send_at_command(serial, "AT+CGATT=1")
+        response
+      end
+    end
+
+    def self.send_at_command(serial, command)
+      response = {
+        :result => String.new,
+        :reason => String.new
+      }
+      3.times do
+        result = serial.command("#{command}\r", 200)
+        if result.to_s.match(/\OK/)
+          response[:result] = "OK"
+          response[:reason] = ""
+          break
+        else
+          response[:result] = "ERROR"
+          response[:reason] = result
+        end
+      end
+      response
+    end
+
     def self.cmd_at(*args, &block)
       if PAX::Network.interface == PAX::Network::Gprs
         serial = PAX::Serial.new(*args)
