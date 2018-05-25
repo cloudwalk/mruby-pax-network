@@ -64,6 +64,16 @@ class Network
     end
   end
 
+  def self.connect(options)
+    @con = nil
+    @interface.connect(options)
+  end
+
+  def self.disconnect
+    @con = nil
+    @interface || @interface.disconnect
+  end
+
   def self.method_missing(method, *args, &block)
     if @interface.respond_to? method
       @interface.send(method, *args, &block)
