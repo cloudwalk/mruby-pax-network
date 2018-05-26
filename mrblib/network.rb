@@ -59,6 +59,7 @@ class Network
         @con_check = Time.now + 5
         @con = @interface.connected?
       end
+      @con
     else
       -3307
     end
