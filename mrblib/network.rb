@@ -74,6 +74,11 @@ class Network
     @interface || @interface.disconnect
   end
 
+  def self.power(*options)
+    @con = nil if [options].flatten.first == 0
+    @interface.power(*options)
+  end
+
   def self.method_missing(method, *args, &block)
     if @interface.respond_to? method
       @interface.send(method, *args, &block)
