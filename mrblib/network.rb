@@ -71,7 +71,7 @@ class Network
 
   def self.disconnect
     @con = nil
-    @interface || @interface.disconnect
+    @interface && @interface.disconnect
   end
 
   def self.power(*options)
