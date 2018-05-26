@@ -64,9 +64,9 @@ class Network
     end
   end
 
-  def self.connect(options)
+  def self.connect(*options)
     @con = nil
-    @interface.connect(options)
+    @interface.connect(*options)
   end
 
   def self.disconnect
