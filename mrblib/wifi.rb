@@ -83,6 +83,7 @@ class Network
 
     def self.scan
       @aps = []
+      Network.disconnect
       self.power(1)
       self.start
       self._scan
