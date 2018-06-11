@@ -93,17 +93,14 @@ class Network
     end
 
     def self.select_attach_network(imsi_id)
-      cmd_at("/dev/mux1", 115200, 8, "N", 1, 20000) do |serial|
-        response = self.send_at_command(serial, "AT+CMEE=2") # Enable errors
-        return response unless response[:result] == "OK"
+      commands = ["AT+COPS=0,2","AT+COPS=4,2,\"#{imsi_id}\""]
 
-        response = self.send_at_command(serial, "AT+COPS=0,2")
-        return response unless response[:result] == "OK"
-
-        response = self.send_at_command(serial, "AT+COPS=4,2,\"#{imsi_id}\"")
-        return response unless response[:result] == "OK"
-
-        response = self.send_at_command(serial, "AT+CGATT=1")
+      cmd_at("/dev/mux1", 115200, 8, "N", 1, 40000) do |serial|
+        response = {}
+        commands.each do |command|
+          response = self.send_at_command(serial, command)
+          return response unless response[:result] == "OK"
+        end
         response
       end
     end
@@ -115,6 +112,7 @@ class Network
       }
       3.times do
         result = serial.command("#{command}\r", 200)
+        # ContextLog.info "send_at_command: #{command},result: #{result}"
         if result.to_s.match(/\OK/)
           response[:result] = "OK"
           response[:reason] = ""
