@@ -86,7 +86,7 @@ class Network
         cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
           response = serial.command("AT+CCID\r", 33)
           if result = response.to_s.match(/\+CCID: (.+)/)
-            result[1]
+            result[1].to_s.chomp
           end
         end
       end
