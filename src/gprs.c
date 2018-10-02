@@ -72,7 +72,7 @@ mrb_gprs_connect(mrb_state *mrb, mrb_value klass)
 {
   mrb_value apn, user, password;
   const char *sAPN, *sUser, *sPass;
-  int keep_alive=300000, timeout=0, ret=0;
+  int keep_alive=180000, timeout=0, ret=0;
 
   apn   = mrb_cv_get(mrb, klass, mrb_intern_lit(mrb, "@apn"));
   sAPN  = mrb_str_to_cstr(mrb, apn);
