@@ -26,6 +26,14 @@ class Network
 
   def self.init(media, options)
     self.configure(media, options)
+    @con = 1
+    # If GPRS add some seconds to avoid SDK connected call
+    # because that call could block the entire POS execution
+    if @interface == Network::Gprs
+      @con_check = (Time.now + 20)
+    else
+      @con_check = (Time.now + 10)
+    end
     @interface.init(options)
   end
 
