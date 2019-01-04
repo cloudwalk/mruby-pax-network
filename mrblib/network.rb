@@ -60,16 +60,20 @@ class Network
   end
 
   def self.connected?
-    if self.started?
-      if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
+    if ThreadScheduler.communication_thread?
+      if self.started?
+        if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
+          @con
+        else
+          @con_check = Time.now + 5
+          @con = @interface.connected?
+        end
         @con
       else
-        @con_check = Time.now + 5
-        @con = @interface.connected?
+        -3307
       end
-      @con
     else
-      -3307
+      ThreadSchedule.command(THREAD_COMMUNICATION, "Device::Network.connected?")
     end
   end
 
