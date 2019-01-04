@@ -60,7 +60,7 @@ class Network
   end
 
   def self.connected?
-    if ThreadScheduler.communication_thread?
+    if ThreadScheduler.communication_thread? && ! ThreadScheduler.pause?(ThreadScheduler::THREAD_COMMUNICATION)
       if self.started?
         if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
           @con
