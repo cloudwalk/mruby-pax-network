@@ -88,6 +88,25 @@ class Network
     @interface.power(*options)
   end
 
+  def self.mac_address(if_klass = nil)
+    if (char = self._mac_address(ifname(if_klass)))
+      char.bytes.map { |byte| byte.to_s(16).upcase }.join(":")
+    end
+  end
+
+  def self.ifname(if_klass = nil)
+    case (if_klass || @interface)
+    when Network::Gprs
+      "wlan1"
+    when Network::Ethernet
+      "eth0"
+    when Network::Wifi
+      "wlan0"
+    else
+      "eth0"
+    end
+  end
+
   def self.method_missing(method, *args, &block)
     if @interface.respond_to? method
       @interface.send(method, *args, &block)
