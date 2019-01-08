@@ -1,15 +1,14 @@
-/*
-** network.c - Network module
-**
-** Network.ping
-**   NetPing();
-**
-*/
-
 #include "mruby.h"
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#include <net/if_arp.h>
 
 #include "mruby/array.h"
 #include "mruby/class.h"
@@ -25,6 +24,28 @@
 #endif
 
 #include "osal.h"
+
+static int
+get_mac_addr(char *ifname, char *mac)
+{
+  int fd, rtn;
+  struct ifreq ifr;
+
+  if( !ifname || !mac ) return -1;
+
+  fd = socket(AF_INET, SOCK_DGRAM, 0 );
+  if ( fd < 0 ) return -1;
+
+  ifr.ifr_addr.sa_family = AF_INET;
+  strncpy(ifr.ifr_name, (const char *)ifname, IFNAMSIZ - 1);
+
+  if ((rtn = ioctl(fd, SIOCGIFHWADDR, &ifr)) == 0)
+    memcpy(mac, (unsigned char *)ifr.ifr_hwaddr.sa_data, 6);
+
+  close(fd);
+
+  return rtn;
+}
 
 static mrb_value
 mrb_network__ping(mrb_state *mrb, mrb_value klass)
@@ -83,6 +104,20 @@ mrb_network_send_recv_timeout(mrb_state *mrb, mrb_value klass)
   return mrb_true_value();
 }
 
+static mrb_value
+mrb_network__macaddress(mrb_state *mrb, mrb_value klass)
+{
+  mrb_value ifname;
+  char mac[8];
+
+  mrb_get_args(mrb, "S", &ifname);
+
+  if (get_mac_addr(RSTRING_PTR(ifname), mac) >= 0)
+    return mrb_str_new(mrb, mac, 6);
+
+  return mrb_nil_value();
+}
+
 void
 mrb_init_network(mrb_state* mrb)
 {
@@ -94,5 +129,6 @@ mrb_init_network(mrb_state* mrb)
   mrb_define_class_method(mrb, network, "_dhcp_client_start", mrb_wifi_dhcp_client_start, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, network, "_dhcp_client_check", mrb_wifi_dhcp_client_check, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, network, "set_socket_timeout", mrb_network_send_recv_timeout, MRB_ARGS_REQ(3));
+  mrb_define_class_method(mrb, network, "_macaddress", mrb_network__macaddress, MRB_ARGS_REQ(1));
 }
 
