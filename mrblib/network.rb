@@ -73,7 +73,7 @@ class Network
         -3307
       end
     else
-      ThreadScheduler.command(ThreadScheduler::THREAD_COMMUNICATION, "Device::Network.connected?")
+      ThreadSchedule.command(THREAD_COMMUNICATION, "Device::Network.connected?")
     end
   end
 
