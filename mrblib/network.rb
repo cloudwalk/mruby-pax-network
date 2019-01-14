@@ -3,7 +3,7 @@ class Network
   NET_LINK_ETH       = 1 # Ethernet
   NET_LINK_ETH1      = 2 # USB Ethernet
   NET_LINK_WL        = 3 # GPRS,CDMA,TDSCDMA
-  NET_LINK_WIFI      = 4 # WiFi
+  NET_LINK_WIFI      = 4 # Wifi
   NET_LINK_PPPOE     = 5 # ADSL
   NET_LINK_MODEM     = 6 # Modem PPP
   NET_LINK_PPPDIRECT = 7 # ppp_direct
@@ -95,12 +95,12 @@ class Network
   end
 
   def self.ifname(if_klass = nil)
-    case (if_klass || @interface)
-    when Network::Gprs
-      "wlan1"
-    when Network::Ethernet
+    klass = (if_klass || @interface)
+    if klass == Network::Gprs
       "eth0"
-    when Network::Wifi
+    elsif klass == Network::Ethernet
+      "eth0"
+    elsif klass == Network::Wifi
       "wlan0"
     else
       "eth0"

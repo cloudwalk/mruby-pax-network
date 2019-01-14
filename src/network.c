@@ -105,7 +105,7 @@ mrb_network_send_recv_timeout(mrb_state *mrb, mrb_value klass)
 }
 
 static mrb_value
-mrb_network__macaddress(mrb_state *mrb, mrb_value klass)
+mrb_network__mac_address(mrb_state *mrb, mrb_value klass)
 {
   mrb_value ifname;
   char mac[8];
@@ -129,6 +129,6 @@ mrb_init_network(mrb_state* mrb)
   mrb_define_class_method(mrb, network, "_dhcp_client_start", mrb_wifi_dhcp_client_start, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, network, "_dhcp_client_check", mrb_wifi_dhcp_client_check, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, network, "set_socket_timeout", mrb_network_send_recv_timeout, MRB_ARGS_REQ(3));
-  mrb_define_class_method(mrb, network, "_macaddress", mrb_network__macaddress, MRB_ARGS_REQ(1));
+  mrb_define_class_method(mrb, network, "_mac_address", mrb_network__mac_address, MRB_ARGS_REQ(1));
 }
 
