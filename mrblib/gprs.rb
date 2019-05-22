@@ -78,13 +78,13 @@ class Network
 
     def self.get_sim_id(serial = nil)
       if serial
-        response = serial.command("AT+CCID\r", 33)
+        response = serial.command("AT+CCID\r", 40)
         if result = response.to_s.match(/\+CCID: (.+)/)
           result[1]
         end
       else
         cmd_at("/dev/mux1", 115200, 8,"N", 1) do |serial|
-          response = serial.command("AT+CCID\r", 33)
+          response = serial.command("AT+CCID\r", 40)
           if result = response.to_s.match(/\+CCID: (.+)/)
             result[1].to_s.chomp
           end
@@ -125,6 +125,7 @@ class Network
       response
     end
 
+    # TODO Implement serial read untile 'ok' response instead of limited bytes
     def self.cmd_at(*args, &block)
       if PAX::Network.interface == PAX::Network::Gprs
         serial = PAX::Serial.new(*args)
