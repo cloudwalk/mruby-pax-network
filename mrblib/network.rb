@@ -34,7 +34,7 @@ class Network
     else
       @con_check = (Time.now + 10)
     end
-    @interface.init(options)
+    @init = @interface.init(options)
   end
 
   def self.configure(media, options)
@@ -62,6 +62,7 @@ class Network
   def self.connected?
     if self.started?
       if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
+      return -3307 unless initialized?
         @con
       else
         @con_check = Time.now + 5
@@ -74,6 +75,7 @@ class Network
   end
 
   def self.connect(*options)
+    return -3307 unless initialized?
     @con = 1
     @interface.connect(*options)
   end
@@ -105,6 +107,10 @@ class Network
     else
       "eth0"
     end
+  end
+
+  def self.initialized?
+    @init == 0
   end
 
   def self.method_missing(method, *args, &block)
