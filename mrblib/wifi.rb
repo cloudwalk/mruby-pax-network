@@ -81,6 +81,14 @@ class Network
       end
     end
 
+    def self.connected?
+      ret, sdk_essid, sdk_bssid, sdk_rssi = self._connected?
+      @rssi = sdk_rssi unless sdk_rssi.to_s.empty?
+      @essid = sdk_essid unless sdk_essid.to_s.empty?
+      @bssid = sdk_bssid unless sdk_bssid.to_s.empty?
+      ret
+    end
+
     def self.scan
       @aps = []
       Network.disconnect

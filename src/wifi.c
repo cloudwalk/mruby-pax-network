@@ -168,21 +168,25 @@ mrb_wifi_connect(mrb_state *mrb, mrb_value klass)
 /*1   -> In Progress*/
 /*< 0 -> Fail*/
 static mrb_value
-mrb_wifi_connected_m(mrb_state *mrb, mrb_value klass)
+mrb_wifi__connected_m(mrb_state *mrb, mrb_value klass)
 {
   char sEssid[32+1] = "                                \0";
   char sBssid[19+1] = "                   \0";
   mrb_int iRssi=0, ret;
+  mrb_value array;
 
   ret = OsWifiCheck((char *)&sEssid, (char *)&sBssid, &iRssi);
 
+  array = mrb_ary_new(mrb);
+  mrb_ary_push(mrb, array, mrb_fixnum_value(ret));
+
   if (ret == RET_OK) {
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@essid"), mrb_str_new_cstr(mrb, sEssid));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@bssid"), mrb_str_new_cstr(mrb, sBssid));
-    mrb_cv_set(mrb, klass, mrb_intern_lit(mrb, "@rssi"), mrb_fixnum_value(iRssi));
+    mrb_ary_push(mrb, array, mrb_str_new_cstr(mrb, sEssid));
+    mrb_ary_push(mrb, array, mrb_str_new_cstr(mrb, sBssid));
+    mrb_ary_push(mrb, array, mrb_fixnum_value(iRssi));
   }
 
-  return mrb_fixnum_value(ret);
+  return array;
 }
 
 static mrb_value
@@ -226,7 +230,7 @@ mrb_init_wifi(mrb_state *mrb)
   mrb_define_class_method(mrb, wifi, "start", mrb_wifi_start, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, wifi, "power", mrb_wifi_power, MRB_ARGS_REQ(1));
   mrb_define_class_method(mrb, wifi, "connect", mrb_wifi_connect, MRB_ARGS_OPT(1));
-  mrb_define_class_method(mrb, wifi, "connected?", mrb_wifi_connected_m, MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, wifi, "_connected?", mrb_wifi__connected_m, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, wifi, "disconnect", mrb_wifi_disconnect, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, wifi, "_scan", mrb_wifi__scan, MRB_ARGS_NONE());
 }
