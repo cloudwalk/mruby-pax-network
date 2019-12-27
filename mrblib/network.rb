@@ -13,7 +13,7 @@ class Network
   MEDIA_ETHERNET     = "ethernet"
 
   class << self
-    attr_accessor :interface
+    attr_accessor :interface, :network_init
   end
 
   def self.started?
@@ -34,7 +34,7 @@ class Network
     else
       @con_check = (Time.now + 10)
     end
-    @init = @interface.init(options)
+    self.network_init = @interface.init(options)
   end
 
   def self.configure(media, options)
@@ -61,8 +61,8 @@ class Network
 
   def self.connected?
     if self.started?
-      if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
       return -3307 unless initialized?
+      if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
         @con
       else
         @con_check = Time.now + 5
@@ -110,7 +110,20 @@ class Network
   end
 
   def self.initialized?
-    @init == 0
+    self.network_init == 0
+  end
+
+  def self.network_init
+    value = Device::Setting.network_init
+    if ! value.to_s.empty? && value.to_i != @network_init
+      @network_init = value.to_i
+    end
+    @network_init
+  end
+
+  def self.network_init=(value)
+    Device::Setting.network_init = value
+    @network_init = value
   end
 
   def self.method_missing(method, *args, &block)
