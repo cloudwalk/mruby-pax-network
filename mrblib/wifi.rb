@@ -75,7 +75,10 @@ class Network
 
     def self.signal
       if @rssi
-        2 * (@rssi.to_i + 100)
+        value = (2 * (@rssi.to_i + 100))
+        return 100 if value > 100
+        return 0 if value < 0
+        value
       else
         0
       end
