@@ -75,10 +75,21 @@ class Network
 
     def self.signal
       if @rssi
-        2 * (@rssi.to_i + 100)
+        value = (2 * (@rssi.to_i + 100))
+        return 100 if value > 100
+        return 0 if value < 0
+        value
       else
         0
       end
+    end
+
+    def self.connected?
+      ret, sdk_essid, sdk_bssid, sdk_rssi = self._connected?
+      @rssi = sdk_rssi unless sdk_rssi.to_s.empty?
+      @essid = sdk_essid unless sdk_essid.to_s.empty?
+      @bssid = sdk_bssid unless sdk_bssid.to_s.empty?
+      ret
     end
 
     def self.scan
