@@ -65,7 +65,7 @@ class Network
       if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
         @con
       else
-        @con_check = Time.now + 5
+        @con_check = Time.now + 10
         @con = @interface.connected?
       end
       @con
