@@ -59,13 +59,19 @@ class Network
     self._dhcp_client_check(@interface.type)
   end
 
+  def self.socket_open?
+    ret = DaFunk::PaymentChannel.client&.connected?
+    @con_check = Time.now + 10 if ret
+    ret
+  end
+
   def self.connected?
     if self.started?
       return -3307 unless initialized?
-      if @con && @con >= 0 && @con_check.is_a?(Time) && (@con_check > Time.now)
+      if @con && @con >= 0 && (@con_check.is_a?(Time) && (@con_check > Time.now) || socket_open?)
         @con
       else
-        @con_check = Time.now + 5
+        @con_check = Time.now + 10
         @con = @interface.connected?
       end
       @con
