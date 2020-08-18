@@ -60,7 +60,7 @@ class Network
   end
 
   def self.socket_open?
-    ret = (!! DaFunk::PaymentChannel.client&.connected?)
+    ret = DaFunk::PaymentChannel.client&.connected?
     @con_check = Time.now + 10 if ret
     ret
   end
